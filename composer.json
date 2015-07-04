@@ -1,0 +1,15 @@
+{
+    "name": "shx13/skeletor",
+    "type": "project",
+    "description": "Basic PHP MVC framework.",
+    "keywords": ["skeletor", "php", "mvc", "framework", "shx"],
+    "homepage": "https://github.com/shx13/skeletor",
+    "license": "MIT",
+    "require-dev": {
+        "php": ">=5.5.0",
+        "mobiledetect/mobiledetectlib": "^2.8"
+    },
+    "autoload": {
+        "psr-4": { "": ["app/system/", "app/model/"] }
+    }
+}

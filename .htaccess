@@ -1,0 +1,3 @@
+# Przerzuc ruch na public
+RewriteEngine on
+RewriteRule ^(.*) pub/$1 [L]
