@@ -52,13 +52,13 @@ return array(
    * DB_PORT The mysql port, 3306 by default (?), find out via phpinfo() and look for mysqli.default_port.
    * DB_CHARSET The charset, necessary for security reasons. Check Database.php class for more info.
    */
-  'DB_TYPE' => 'mysql',
-  'DB_HOST' => 'localhost',
-  'DB_NAME' => 'dbname',
-  'DB_USER' => 'username',
-  'DB_PASS' => 'password',
-  'DB_PORT' => '3306',
-  'DB_CHARSET' => 'utf8',
+	'DB_TYPE' => 'mysql',
+	'DB_HOST' => 'localhost',
+	'DB_NAME' => 'dbname',
+	'DB_USER' => 'username',
+	'DB_PASS' => 'password',
+	'DB_PORT' => '3306',
+	'DB_CHARSET' => 'utf8',
   
   /**
    * Configuration for: Cookies
@@ -69,4 +69,9 @@ return array(
    */
   'COOKIE_RUNTIME' => 1209600,
   'COOKIE_PATH' => '/',
+
+  /*
+	* Configuration for the game
+	*/
+	'END_GAME_DATE' => strtotime('4-1-1984'), // start date: 4-12-1983
 );

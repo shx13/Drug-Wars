@@ -1,9 +1,9 @@
 {
-    "name": "shx13/skeletor",
+    "name": "shx13/drugwars",
     "type": "project",
-    "description": "Basic PHP MVC framework.",
-    "keywords": ["skeletor", "php", "mvc", "framework", "shx"],
-    "homepage": "https://github.com/shx13/skeletor",
+    "description": "PHP remake of a cult 1980's video game.",
+    "keywords": ["drugwars", "php", "mvc", "framework", "shx"],
+    "homepage": "https://github.com/shx13/drug-wars",
     "license": "MIT",
     "require-dev": {
         "php": ">=5.5.0",

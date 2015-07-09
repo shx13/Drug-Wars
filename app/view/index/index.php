@@ -2,6 +2,7 @@
 
   <?php $this->renderFeedbackMessages(); ?>
 
+  <h6>GameGraveyard.net presents...<br>Remake of John E. Dell 1984 Cult Game</h6>
   <h1>DRUG WARS</h1>
 
   <ul>

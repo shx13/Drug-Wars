@@ -1,47 +1,53 @@
 /*
-* EXTERNAL FONTS DECLARATION
-*/
-
-/* latin-ext */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url(http://fonts.gstatic.com/s/opensans/v13/u-WUoqrET9fUeobQW7jkRRJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url(http://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-
-/*
 * BODY
 */
 
 body {
   background: #000;
   color: #00aaaa;
+  font-weight: bold;
   font-size: 16px;
   font-family: monospace;
 }
 
 /*
+* topMenu
+* top game options menu
+*/
+
+#topMenu {
+  width: 800px;
+  margin: 0.5em auto;
+}
+
+#topMenu a {
+  font-size: 0.9em;
+  color: #dd2D3E;
+  text-decoration: none;
+}
+
+#topMenu a:hover {
+  color: #dc2D3E;
+  text-decoration: underline;
+}
+
+#topMenu a.right {
+  float: right;
+}
+
+/*
 * startScreen
+* main menu of the game
 */
 
 #startScreen {
-  width: 700px;
-  height: 500px;
+  width: 800px;
+  height: 300px;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -300px;
-  margin-left: -350px;
+  margin-top: -150px;
+  margin-left: -400px;
 }
 
 #startScreen h1 {
@@ -50,10 +56,16 @@ body {
   margin: 0;
 }
 
+#startScreen h6 {
+  font: bold 14px monospace;
+  text-align: center;
+  margin: 0;
+}
+
 #startScreen ul {
   list-style: none outside;
   text-align: center;
-  margin: 20px 35px 0 0;
+  margin: 20px 0 0 0;
 }
 
 #startScreen ul li {
@@ -63,4 +75,226 @@ body {
 #startScreen ul li a {
   color: #eee;
   text-decoration: none;
+}
+
+/*
+* instructions
+* screen with game manual
+*/
+
+#instructions {
+  width: 800px;
+  height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -200px;
+  margin-left: -400px;
+  outline: 0px solid red;
+}
+
+#instructions h1 {
+  font: bold 2em monospace;
+  margin: 0.5em 0 0.5em 0;
+}
+
+#instructions p {
+  white-space: pre-wrap;
+}
+
+#instructions a {
+  color: #dd2D3E;
+  text-decoration: none;
+}
+
+#instructions a:hover {
+  color: #dc2D3E;
+  text-decoration: underline;
+}
+
+/*
+* GameBox
+* main screen of the game
+*/
+
+#gameBox {
+  width: 800px;
+  margin: auto;
+  margin-top: 10px;
+}
+
+#gameBox h1 {
+  font: bold 44px monospace;
+  margin: 10px 0 20px 0;
+}
+
+#gameBox h6 {
+  font: bold 16px monospace;
+}
+
+#gameBox h6.date {
+  float: left;
+  margin: 0 0 10px 100px;
+}
+
+#gameBox h6.hold {
+  float: right;
+  margin: 0 100px 10px 0;
+}
+
+#gameBox hr.hardass {
+  border: 0;
+  border-top: 20px solid #00aaaa;
+}
+
+#gameBox p.hardass {
+  margin: 0;
+  white-space: pre;
+}
+
+#gameBox hr.hardass:first-of-type {
+  margin-top: 100px;
+}
+
+#gameBox hr.hardass:last-of-type {
+  margin-bottom: 100px;
+}
+
+#gameBox table {
+  width: 800px;
+  border: 2px solid #00aaaa;
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+#gameBox table td {
+  vertical-align: middle;
+  border: 2px solid #00aaaa;
+}
+
+#gameBox table.top {
+  text-align: center;
+  height: 50px;
+  border-bottom: 0px;
+}
+
+#gameBox table.top td.stash {
+  width: 300px;
+}
+
+#gameBox table.top td.loc {
+  width: 200px;
+}
+
+#gameBox table.top td.trench {
+  width: 300px;
+}
+
+#gameBox table.bottom {
+  height: 300px;
+  border-top: 0px;
+  margin-top: -2px;
+}
+
+#gameBox table.bottom td {
+  width: 50%
+}
+
+#gameBox table.bottom ul {
+  list-style: none outside;
+  margin: 0 0 0 90px;
+}
+
+#gameBox table.bottom ul li {
+  line-height: 1.2em;
+}
+
+#actionMenu {
+  width: 800px;
+  margin: auto;
+  margin-top: 1em;
+}
+
+#actionMenu p {
+  clear: both;
+  margin: 1em 0 1em 0;
+}
+
+#actionMenu a {
+  color: #962D3E;
+  text-decoration: none;
+}
+
+#actionMenu #loan_shark_form a.back_to_menu,
+#actionMenu #transfer_drugs_form a.back_to_menu,
+#actionMenu #visit_bank_form a.back_to_menu {
+  margin-top: 1em;
+  display: inline-block;
+}
+
+#actionMenu a:hover {
+  color: #dc2D3E;
+  text-decoration: none;
+}
+
+#actionMenu #action_jet_where {
+  white-space: pre;
+  display: none;
+}
+
+#actionMenu #action_buy_box {
+  display: none;
+}
+
+#actionMenu #action_buy_what {
+  white-space: pre;
+}
+
+#actionMenu #action_buy_how_much {
+  display: none;
+}
+
+#actionMenu #buy_drugs_form {
+  margin: 16px 0 16px 0;
+}
+
+#actionMenu #action_sell_box {
+  display: none;
+}
+
+#actionMenu #action_sell_what {
+  white-space: pre;
+}
+
+#actionMenu #action_sell_how_much {
+  display: none;
+}
+
+#actionMenu #sell_drugs_form {
+  margin: 1em 0 1em 0;
+}
+
+#actionMenu #loan_shark_form {
+  display: none;
+}
+
+#actionMenu #transfer_drugs_form {
+  display: none;
+}
+
+#actionMenu #transfer_drugs_form input.submit {
+  margin-top: 1em;
+}
+
+#actionMenu #visit_bank_form {
+  display: none;
+}
+
+#actionMenu ul {
+  width: 300px;
+  list-style: none outside;
+  float: left;
+  margin: 0 0 1em 0;
+  padding: 0 0 0 100px;
+  outline: 0px solid red;
 }
