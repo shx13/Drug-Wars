@@ -319,6 +319,7 @@ class GameModel
   * It can be either positive or negative.
   *
   * $dice var is a random number from 1 to 20, it selects the encounter from the list.
+  * There are 15 encounters, but the last one (officer hardass) is most likely to happen
   * $multiplier var is a random number from 2 to 10, it is used by some of the encounters
   * for further calculations (i.e. price drops) 
   *
@@ -369,25 +370,28 @@ class GameModel
       case 4:
         Session::add('feedback_negative', 'YOU DROPPED SOME DRUGS !!  THAT\'S A DRAG MAN !!');
 
-        // odpalane za kazdym razem, zeby wylosowalo nowa ilosc dragow do zgubienia
+        // mt_rand runs every time so it can get the different number for each drugs
         $drugsDropped = mt_rand(1,10);
-        // odjecie upuszczonych dragow
+        // remove dropped drugs
         Session::set('coat_cocaine', Session::get('coat_cocaine') - $drugsDropped);
-        // jesli dragi wychodza na minus
+        // if there's more drugs dropped than the player possess
         if(Session::get('coat_cocaine') < 0) {
-          // ustalenie nowej wartosci upuszczonych dragow (powyzej 0)
+          // get a new value of dropped drugs (above 0)
           $drugsDropped = $drugsDropped + Session::get('coat_cocaine');
-          // dodanie miejsca do plaszcza
+          // add space to the coat
           Session::set('hold', Session::get('hold') + $drugsDropped);
-          // wyzerowanie ilosci kokainy
+          // set drug quantity to zero
           Session::set('coat_cocaine', 0);
         }
 
-        // jesli zostaje jeszcze troche dragow
+        // if there are still drugs left
         else {
-          // dodanie miejsca do plaszcza
+          // add space to the coat
           Session::set('hold', Session::get('hold') + $drugsDropped);
         }
+
+        // it's basically the same for all the other drugs, need to be changed
+        // can be automated better
 
         $drugsDropped = mt_rand(1,10);
         Session::set('coat_heroin', Session::get('coat_heroin') - $drugsDropped);
@@ -444,7 +448,7 @@ class GameModel
         Session::add('feedback_negative', 'YOUR MAMA MADE SOME BROWNIES AND USED YOUR WEED !!<br>THEY WERE GREAT !!');
         $weedLost = mt_rand(1,20);
         Session::set('coat_weed', Session::get('coat_weed') - $weedLost);
-        // jesli ilosc zielska spadla ponizej 0
+        // if the quantity of weed dropped below zero
         if(Session::get('coat_weed') < 0) {
           $weedLost = $weedLost + Session::get('coat_weed');
           Session::set('hold', Session::get('hold') + $weedLost);
@@ -461,7 +465,7 @@ class GameModel
 
       case 7:
         $findHowMany = mt_rand(1,10);
-        // jesli znaleziona ilosc dragow przekracza pojemnosc plaszcza
+        // if there's not enough space in the coat for the drugs that were found
         if((Session::get('hold') - $findHowMany) < 0) {
           $findHowMany = Session::get('hold');
         }
@@ -506,7 +510,7 @@ class GameModel
           break;
 
         }
-        // odjecie miejsca z plaszcza
+        // remove space from the coat
         Session::set('hold', Session::get('hold') - $findHowMany);
         Session::add('feedback_negative', 'YOU FIND '.$findHowMany.' UNITS OF '.$findWhat.' ON A DEAD DUDE IN THE SUBWAY !!');
       break;
@@ -533,25 +537,25 @@ class GameModel
 
       case 12:
         $coatSpace = mt_rand(10,25);
-        // Session::add('feedback_negative', 'DO YOU WANT TO BUY A NEW COAT FOR '.($coatSpace + 100).' ?'); (chwilowo w widoku)
+        // Session::add('feedback_negative', 'DO YOU WANT TO BUY A NEW COAT FOR '.($coatSpace + 100).' ?'); (currently in view/action_menu_2.php)
         Session::set('user_action', 12);
         Session::set('user_coat_price', 100+$coatSpace);
       break;
 
       case 13:
-        // Session::add('feedback_negative', 'THERE IS SOME WEED THAT SMELLS LIKE PARAQUAT HERE !! IT LOOKS GOOD !!<br>WILL YOU SMOKE IT ?'); (chwilowo w widoku)
+        // Session::add('feedback_negative', 'THERE IS SOME WEED THAT SMELLS LIKE PARAQUAT HERE !! IT LOOKS GOOD !!<br>WILL YOU SMOKE IT ?'); (currently in view/action_menu_2.php)
         Session::set('user_action', 13);
       break;
 
       case 14:
-        // Session::add('feedback_negative', 'WILL YOU BUY A .38 SPECIAL FOR XXX ?'); (chwilowo w widoku)
+        // Session::add('feedback_negative', 'WILL YOU BUY A .38 SPECIAL FOR XXX ?'); (currently in view/action_menu_2.php)
         Session::set('user_action', 14);
         Session::set('user_gun_price', mt_rand(300,500));
       break;
 
       default:
-        // Session::add('feedback_negative', 'OFFICER HARDASS AND X OF HIS DEPUTIES ARE CHASING YOU !!!!!'); (chwilowo w widoku)
-        // wylosowanie ilosci gliniarzy
+        // Session::add('feedback_negative', 'OFFICER HARDASS AND X OF HIS DEPUTIES ARE CHASING YOU !!!!!'); (currently in view/action_menu_2.php)
+        // set the numbers of cops
         Session::set('cops',mt_rand(1,5));
         Session::set('cops_total', Session::get('cops'));
         Session::set('user_action', 30);
@@ -562,36 +566,50 @@ class GameModel
 
   }
 
-  // akcja z random encounter
+
+  /*
+  * Action. This method is responsible for handling user input required by some encounters.
+  * It sets the user_action var, which blocks the rendering of default action menu and shows
+  * the action_menu_2.php instead (check GameController.php for more info).
+  *
+  * Available actions (starts with action id):
+  *
+  * 12. Buy new coat (adds more space)
+  * 13. Paraquat smelling weed (50% for death, 50% for points multiplier)
+  * 14. Buy new gun (adds one gun to the inventory)
+  * 30. Fight officer hardass - start screen
+  * 31. Fight officer hardass - actual fight
+  * 32. Fight officer hardass - end of the fight, summary
+  */
+
   public static function action() {
 
-    // id akcji
+    // get action id
     $actionId = Session::get('user_action');
 
     switch($actionId) {
 
-      // kupno nowego plaszcza
+      // Buy new coat
       case 12:
         if(Request::post('action') == 'yes') {
 
-          // sprawdzenie czy gracza na to stac
+          // check if the player can afford it
           if($_SESSION['user_coat_price'] > Session::get('cash')) {
             Session::add('feedback_negative', 'YOU CAN\'T AFFORD THIS DUDE !');
           } else {
-
-            // odjecie kasy z plaszcza
+            // remove cash from the player
             Session::set('cash', Session::get('cash') - $_SESSION['user_coat_price']);
-            // dodanie miejsca do plaszcza
+            // add more space to the coat
             Session::set('hold', Session::get('hold') + ($_SESSION['user_coat_price']-100));
 
           }
         }
       break;
 
-      // super joint
+      // Paraquat smelling weed
       case 13:
         if(Request::post('action') == 'yes') {
-          // 50% na zgon, 50% na podwojenie pkt
+          // 50% for death, 50% for points multiplier
           $deathRoll = mt_rand(1,2);
           if($deathRoll == 1) {
             Session::add('feedback_negative', 'YOU HALUCINATE FOR THREE DAYS ON THE WILDEST TRIP YOU EVER IMAGINED !!!<br>THEN YOU DIE BECAUSE YOUR BRAIN HAS DISINTEGRATED !!!');
@@ -602,114 +620,116 @@ class GameModel
         }
       break;
 
-      // kupno nowej broni
+      // buy new gun
       case 14:
         if(Request::post('action') == 'yes') {
 
-          // sprawdzenie czy gracza na to stac
+          // check if the player can afford it
           if($_SESSION['user_gun_price'] > Session::get('cash')) {
             Session::add('feedback_negative', 'YOU CAN\'T AFFORD THIS DUDE !');
           } else {
-
-            // odjecie kasy z plaszcza
+            // remove cash from the player
             Session::set('cash', Session::get('cash') - $_SESSION['user_gun_price']);
-            // dodanie broni do plaszcza
+            // add gun to the user inventory
             Session::set('guns', Session::get('guns') + 1);
-            
           }
         }
       break;
 
-      // officer hardass - poczatek
+      // Fight officer hardass - start screen
       case 30:
-        // ustawienie akcji na walke z policjantem
+        // set the user_action to actual fight (31)
         Session::set('user_action', 31);
         return true;
       break;
 
-      // officer hardass - walka
+      // Fight officer hardass - actual fight
       case 31:
 
-        // jesli skonczyly sie hp...
+        // If the player is out of hp (end of the game)
         if(Session::get('user_hp') >= 50) {
           Session::add('feedback_negative', 'THEY KILLED YOU !!!!');
           Session::set('game_date', strtotime('1-2-1984'));
           return true;
         }
 
-        // proba ucieczki
+        // player tries to run
         if(Request::post('action') == 'run') {
 
-          // 40% szans na ucieczke
+          // 40% chance for succesfull escape
           $diceRoll = mt_rand(1,100);
 
-          // ucieczka sie nie powiodla
+          // escape is not succesfull
           if($diceRoll <= 60) {
 
-            // info o tym ze strzelaja i nie da sie uciekac
+            // cops are trying to shot you
             Session::add('feedback_negative', 'THEY ARE FIRING ON YOU MAN !!');
 
-            // 80% szans na to ze trafili
+            // 80% chance for hit
             $diceRoll = mt_rand(1,100);
             
             if($diceRoll <= 80) {
-              // info o tym ze sie dostalo
               Session::add('feedback_negative', 'YOU\'VE BEEN HIT !!');
-              // wylosowanie zadanych przez gliniarzy obrazen
+              // set the damage
               $damage = mt_rand(1,5);
               Session::set('user_hp', Session::get('user_hp') + $damage);
             }
 
+            // return true so the user_action isn't unset at the end of this method
             return true;
           }
 
         }
 
-        // proba walki
+        // player tries to fight
         elseif(Request::post('action') == 'fight') {
 
-          // 50% na trafienie przeciwnika
+          // 50% for a hit
           $diceRoll = mt_rand(1,100);
           if($diceRoll <= 50) {
 
+            // remove one enemy
             Session::set('cops', Session::get('cops') - 1);
 
-            // jesli pokonalo sie wszystkich, koniec walki
+            // if the player kills all the cops and wins the fight
             if(Session::get('cops') <= 0) {
 
               Session::add('feedback_negative', 'YOU KILLED ALL '.Session::get('cops_total').' OF THEM !!!!');
 
-              // znaleziona przy trupach kasa
+              // looted cash
               $extraCash = mt_rand(500, 2000 * Session::get('cops_total'));
               Session::set('cash', Session::get('cash') + $extraCash);
               Session::add('feedback_negative', 'YOU FOUND '.$extraCash.' DOLLARS ON OFFICER HARDASS\' CARCASS !!!');
 
+              // sets the user_action to 32 (summary of the fight) and returns true so the user_action var isn't unset
               Session::set('user_action', 32);
               return true;
 
             }
 
+            // info about the shoting
             Session::add('feedback_negative', 'YOU\'RE FIRING ON THEM !!!');
             Session::add('feedback_negative', 'YOU KILLED ONE !!');
 
           }
 
-          // info o tym ze strzelaja i nie da sie uciekac
+          // Cops are firing on the player
           Session::add('feedback_negative', 'THEY ARE FIRING ON YOU MAN !!');
 
-          // 50% szans na to ze trafili
+          // 50% chances for a hit
           $diceRoll = mt_rand(1,100);
-          
+
+          // player got hit
           if($diceRoll <= 50) {
-            // info o tym ze sie dostalo
             Session::add('feedback_negative', 'YOU\'VE BEEN HIT !!');
-            // wylosowanie zadanych przez gliniarzy obrazen
+            // set the damage and add it to user_hp
             $damage = mt_rand(1,5);
             Session::set('user_hp', Session::get('user_hp') + $damage);
           } else {
             Session::add('feedback_negative', 'THEY\'VE MISSED !!');
           }
 
+          // return true so the user_action var isn't unset
           return true;
 
         }
@@ -726,243 +746,143 @@ class GameModel
 
   }
 
-  // splacanie dlugu
+
+  /*
+  * Repay
+  * 
+  * Repays the loan shark debt.
+  */
+
   public static function repay() {
 
-    // walidacja
+    // validate the input
     if(!is_numeric(Request::post('how_much_repay')) || Request::post('how_much_repay') < 0) {
       return false;
     }
 
-    // sprawdzenie czy go na to stac
+    // check if the player can afford this
     if(Request::post('how_much_repay') > Session::get('cash')) {
       Session::add('feedback_negative', 'YOU CAN\'T AFFORD THIS DUDE !');
       return false;
     }
 
-    // odjecie kasy z plaszcza
+    // remove cash from player
     Session::set('cash', Session::get('cash') - floor(Request::post('how_much_repay')));
-    // odjecie dlugu od lichwiarza
+    // set the new debt
     Session::set('debt', Session::get('debt') - floor(Request::post('how_much_repay')));
-    // jesli dlug mniejszy niz 0 ustaw go na 0
+    // if the new debt goes below zero, don't let this happen
     if(Session::get('debt') < 0) { Session::set('debt', 0); }
 
     return true;
 
   }
 
-  // nowy dlug
+
+  /*
+  * Borrow
+  * 
+  * Borrow the money from the loan shark and create new debt.
+  */
+
   public static function borrow() {
 
-    // walidacja
+    // validate
     if(!is_numeric(Request::post('how_much_borrow')) || Request::post('how_much_borrow') < 0) {
       return false;
     }
 
-    // czy nie przekracza limitu
+    // check if the new debt isn't above the limit
     if(Request::post('how_much_borrow') + Session::get('debt') >= 13000) {
       Session::add('feedback_negative', 'YOU CAN\'T BORROW THAT MUCH !');
       return false;
     }
 
-    // dodanie kasy do plaszcza
+    // add cash to players inventory
     Session::set('cash', Session::get('cash') + floor(Request::post('how_much_borrow')));
-    // dodanie dlugu do lichwiarza
+    // set new debt
     Session::set('debt', Session::get('debt') + floor(Request::post('how_much_borrow')));
 
     return true;
 
   }
 
-  // transfer dragow
+
+  /*
+  * Transfer drugs
+  * 
+  * Transfer drugs between coat and stash.
+  */
+
   public static function transfer_drugs() {
 
-    // transfer kokainy z plaszcza do skrytyki
-    if(Request::post('stash_cocaine') && Request::post('stash_cocaine') > 0 && is_numeric(Request::post('stash_cocaine'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('stash_cocaine') > Session::get('coat_cocaine')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH COCAINE ON YOU !');
-        return false;
+    // find out which drug the player wants to transfer from coat to the stash
+    if    (Request::post('stash_cocaine') != null) { $transferToStash[] = 'cocaine'; }
+    elseif(Request::post('stash_heroin') != null)  { $transferToStash[] = 'heroin'; }
+    elseif(Request::post('stash_acid') != null)    { $transferToStash[] = 'acid'; }
+    elseif(Request::post('stash_weed') != null)    { $transferToStash[] = 'weed'; }
+    elseif(Request::post('stash_speed') != null)   { $transferToStash[] = 'speed'; }
+    elseif(Request::post('stash_ludes') != null)   { $transferToStash[] = 'ludes'; }
+    else { $transferToStash = null; }
+
+    // find out which drug the player wants to transfer from stash to the coat
+    if    (Request::post('coat_cocaine') != null) { $transferToCoat[] = 'cocaine'; }
+    elseif(Request::post('coat_heroin') != null)  { $transferToCoat[] = 'heroin'; }
+    elseif(Request::post('coat_acid') != null)    { $transferToCoat[] = 'acid'; }
+    elseif(Request::post('coat_weed') != null)    { $transferToCoat[] = 'weed'; }
+    elseif(Request::post('coat_speed') != null)   { $transferToCoat[] = 'speed'; }
+    elseif(Request::post('coat_ludes') != null)   { $transferToCoat[] = 'ludes'; }
+    else { $transferToCoat = null; }
+
+    // if the player wants to transfer some drugs to the stash
+    if($transferToStash != null) {
+
+      // transfer drugs to the coat
+      foreach($transferToStash as $drug) {
+
+        if(Request::post('stash_'.$drug) && Request::post('stash_'.$drug) > 0 && is_numeric(Request::post('stash_'.$drug))) {
+          // sprawdzenie czy kokaina jest
+          if(Request::post('stash_'.$drug) > Session::get('coat_'.$drug)) {
+            Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.strtoupper($drug).' ON YOU !');
+            return false;
+          }
+          // dodanie kokainy do skrytki
+          Session::set('stash_'.$drug, Session::get('stash_'.$drug) + Request::post('stash_'.$drug));
+          // odjecie kokainy z plaszcza
+          Session::set('coat_'.$drug, Session::get('coat_'.$drug) - Request::post('stash_'.$drug));
+          // dodanie miejsca do plaszcza
+          Session::set('hold', Session::get('hold') + Request::post('stash_'.$drug));
+        }
+
       }
-      // dodanie kokainy do skrytki
-      Session::set('stash_cocaine', Session::get('stash_cocaine') + Request::post('stash_cocaine'));
-      // odjecie kokainy z plaszcza
-      Session::set('coat_cocaine', Session::get('coat_cocaine') - Request::post('stash_cocaine'));
-      // dodanie miejsca do plaszcza
-      Session::set('hold', Session::get('hold') + Request::post('stash_cocaine'));
+
     }
 
-    // transfer kokainy ze skrytki do plaszcza
-    if(Request::post('trench_cocaine') && Request::post('trench_cocaine') > 0 && is_numeric(Request::post('trench_cocaine'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('trench_cocaine') > Session::get('stash_cocaine')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH COCAINE IN YOUR STASH !');
-        return false;
+    // if the player wants to transfer some drugs from the stash to the coat
+    if($transferToCoat != null) {
+
+      // transfer drugs to the stash
+      foreach($transferToCoat as $drug) {
+
+        if(Request::post('coat_'.$drug) && Request::post('coat_'.$drug) > 0 && is_numeric(Request::post('coat_'.$drug))) {
+          // sprawdzenie czy kokaina jest
+          if(Request::post('coat_'.$drug) > Session::get('stash_'.$drug)) {
+            Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.strtoupper($drug).' IN YOUR STASH !');
+            return false;
+          }
+          // dodanie kokainy do plaszcza
+          Session::set('coat_'.$drug, Session::get('coat_'.$drug) + Request::post('coat_'.$drug));
+          // odjecie miejsca z plaszcza
+          Session::set('hold', Session::get('hold') - Request::post('coat_'.$drug));
+          // odjecie kokainy ze skrytki
+          Session::set('stash_'.$drug, Session::get('stash_'.$drug) - Request::post('coat_'.$drug));
+        }
+
       }
-      // dodanie kokainy do plaszcza
-      Session::set('coat_cocaine', Session::get('coat_cocaine') + Request::post('trench_cocaine'));
-      // odjecie miejsca z plaszcza
-      Session::set('hold', Session::get('hold') - Request::post('trench_cocaine'));
-      // odjecie kokainy ze skrytki
-      Session::set('stash_cocaine', Session::get('stash_cocaine') - Request::post('trench_cocaine'));
-    }
 
-
-    // transfer heroiny z plaszcza do skrytyki
-    if(Request::post('stash_heroin') && Request::post('stash_heroin') > 0 && is_numeric(Request::post('stash_heroin'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('stash_heroin') > Session::get('coat_heroin')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH HEROIN ON YOU !');
-        return false;
-      }
-      // dodanie heroiny do skrytki
-      Session::set('stash_heroin', Session::get('stash_heroin') + Request::post('stash_heroin'));
-      // odjecie heroiny z plaszcza
-      Session::set('coat_heroin', Session::get('coat_heroin') - Request::post('stash_heroin'));
-      // dodanie miejsca do plaszcza
-      Session::set('hold', Session::get('hold') + Request::post('stash_heroin'));
-    }
-
-    // transfer heroiny ze skrytki do plaszcza
-    if(Request::post('trench_heroin') && Request::post('trench_heroin') > 0 && is_numeric(Request::post('trench_heroin'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('trench_heroin') > Session::get('stash_heroin')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH HEROIN IN YOUR STASH !');
-        return false;
-      }
-      // dodanie heroiny do plaszcza
-      Session::set('coat_heroin', Session::get('coat_heroin') + Request::post('trench_heroin'));
-      // odjecie miejsca z plaszcza
-      Session::set('hold', Session::get('hold') - Request::post('trench_heroin'));
-      // odjecie heroiny ze skrytki
-      Session::set('stash_heroin', Session::get('stash_heroin') - Request::post('trench_heroin'));
-    }
-
-
-    // transfer acida z plaszcza do skrytyki
-    if(Request::post('stash_acid') && Request::post('stash_acid') > 0 && is_numeric(Request::post('stash_acid'))) {
-      // sprawdzenie czy acid jest
-      if(Request::post('stash_acid') > Session::get('coat_acid')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH ACID ON YOU !');
-        return false;
-      }
-      // dodanie acida do skrytki
-      Session::set('stash_acid', Session::get('stash_acid') + Request::post('stash_acid'));
-      // odjecie acida z plaszcza
-      Session::set('coat_acid', Session::get('coat_acid') - Request::post('stash_acid'));
-      // dodanie miejsca do plaszcza
-      Session::set('hold', Session::get('hold') + Request::post('stash_acid'));
-    }
-
-    // transfer acida ze skrytki do plaszcza
-    if(Request::post('trench_acid') && Request::post('trench_acid') > 0 && is_numeric(Request::post('trench_acid'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('trench_acid') > Session::get('stash_acid')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH ACID IN YOUR STASH !');
-        return false;
-      }
-      // dodanie acida do plaszcza
-      Session::set('coat_acid', Session::get('coat_acid') + Request::post('trench_acid'));
-      // odjecie miejsca z plaszcza
-      Session::set('hold', Session::get('hold') - Request::post('trench_acid'));
-      // odjecie acida ze skrytki
-      Session::set('stash_acid', Session::get('stash_acid') - Request::post('trench_acid'));
-    }
-
-
-    // transfer weed z plaszcza do skrytyki
-    if(Request::post('stash_weed') && Request::post('stash_weed') > 0 && is_numeric(Request::post('stash_weed'))) {
-      // sprawdzenie czy weed jest
-      if(Request::post('stash_weed') > Session::get('coat_weed')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH WEED ON YOU !');
-        return false;
-      }
-      // dodanie weeda do skrytki
-      Session::set('stash_weed', Session::get('stash_weed') + Request::post('stash_weed'));
-      // odjecie weeda z plaszcza
-      Session::set('coat_weed', Session::get('coat_weed') - Request::post('stash_weed'));
-      // dodanie miejsca do plaszcza
-      Session::set('hold', Session::get('hold') + Request::post('stash_weed'));
-    }
-
-    // transfer weeda ze skrytki do plaszcza
-    if(Request::post('trench_weed') && Request::post('trench_weed') > 0 && is_numeric(Request::post('trench_weed'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('trench_weed') > Session::get('stash_weed')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH WEED IN YOUR STASH !');
-        return false;
-      }
-      // dodanie weeda do plaszcza
-      Session::set('coat_weed', Session::get('coat_weed') + Request::post('trench_weed'));
-      // odjecie miejsca z plaszcza
-      Session::set('hold', Session::get('hold') - Request::post('trench_weed'));
-      // odjecie weeda ze skrytki
-      Session::set('stash_weed', Session::get('stash_weed') - Request::post('trench_weed'));
-    }
-
-
-    // transfer speeda z plaszcza do skrytyki
-    if(Request::post('stash_speed') && Request::post('stash_speed') > 0 && is_numeric(Request::post('stash_speed'))) {
-      // sprawdzenie czy speed jest
-      if(Request::post('stash_speed') > Session::get('coat_speed')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH SPEED ON YOU !');
-        return false;
-      }
-      // dodanie speeda do skrytki
-      Session::set('stash_speed', Session::get('stash_speed') + Request::post('stash_speed'));
-      // odjecie speeda z plaszcza
-      Session::set('coat_speed', Session::get('coat_speed') - Request::post('stash_speed'));
-      // dodanie miejsca do plaszcza
-      Session::set('hold', Session::get('hold') + Request::post('stash_speed'));
-    }
-
-    // transfer speeda ze skrytki do plaszcza
-    if(Request::post('trench_speed') && Request::post('trench_speed') > 0 && is_numeric(Request::post('trench_speed'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('trench_speed') > Session::get('stash_speed')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH SPEED IN YOUR STASH !');
-        return false;
-      }
-      // dodanie speeda do plaszcza
-      Session::set('coat_speed', Session::get('coat_speed') + Request::post('trench_speed'));
-      // odjecie miejsca z plaszcza
-      Session::set('hold', Session::get('hold') - Request::post('trench_speed'));
-      // odjecie speeda ze skrytki
-      Session::set('stash_speed', Session::get('stash_speed') - Request::post('trench_speed'));
-    }
-
-
-    // transfer ludes z plaszcza do skrytyki
-    if(Request::post('stash_ludes') && Request::post('stash_ludes') > 0 && is_numeric(Request::post('stash_ludes'))) {
-      // sprawdzenie czy ludes jest
-      if(Request::post('stash_ludes') > Session::get('coat_ludes')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH LUDES ON YOU !');
-        return false;
-      }
-      // dodanie ludes do skrytki
-      Session::set('stash_ludes', Session::get('stash_ludes') + Request::post('stash_ludes'));
-      // odjecie ludes z plaszcza
-      Session::set('coat_ludes', Session::get('coat_ludes') - Request::post('stash_ludes'));
-      // dodanie miejsca do plaszcza
-      Session::set('hold', Session::get('hold') + Request::post('stash_ludes'));
-    }
-
-    // transfer ludes ze skrytki do plaszcza
-    if(Request::post('trench_ludes') && Request::post('trench_ludes') > 0 && is_numeric(Request::post('trench_ludes'))) {
-      // sprawdzenie czy kokaina jest
-      if(Request::post('trench_ludes') > Session::get('stash_ludes')) {
-        Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH LUDES IN YOUR STASH !');
-        return false;
-      }
-      // dodanie ludes do plaszcza
-      Session::set('coat_ludes', Session::get('coat_ludes') + Request::post('trench_ludes'));
-      // odjecie miejsca z plaszcza
-      Session::set('hold', Session::get('hold') - Request::post('trench_ludes'));
-      // odjecie ludes ze skrytki
-      Session::set('stash_ludes', Session::get('stash_ludes') - Request::post('trench_ludes'));
     }
 
     return true;
+
   }
 
   // depozyt w banku

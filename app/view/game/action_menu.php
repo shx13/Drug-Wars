@@ -56,32 +56,32 @@
       <tr>
         <td>COCAINE</td>
         <td><input name="stash_cocaine" type="text"></td>
-        <td><input name="trench_cocaine" type="text"></td>
+        <td><input name="coat_cocaine" type="text"></td>
       </tr>
       <tr>
         <td>HEROIN</td>
         <td><input name="stash_heroin" type="text"></td>
-        <td><input name="trench_heroin" type="text"></td>
+        <td><input name="coat_heroin" type="text"></td>
       </tr>
       <tr>
         <td>ACID</td>
         <td><input name="stash_acid" type="text"></td>
-        <td><input name="trench_acid" type="text"></td>
+        <td><input name="coat_acid" type="text"></td>
       </tr>
       <tr>
         <td>WEED</td>
         <td><input name="stash_weed" type="text"></td>
-        <td><input name="trench_weed" type="text"></td>
+        <td><input name="coat_weed" type="text"></td>
       </tr>
       <tr>
         <td>SPEED</td>
         <td><input name="stash_speed" type="text"></td>
-        <td><input name="trench_speed" type="text"></td>
+        <td><input name="coat_speed" type="text"></td>
       </tr>
       <tr>
         <td>LUDES</td>
         <td><input name="stash_ludes" type="text"></td>
-        <td><input name="trench_ludes" type="text"></td>
+        <td><input name="coat_ludes" type="text"></td>
       </tr>
       <tr>
         <td colspan="3"><input class="submit" type="submit" value="TRANSFER"></td>
