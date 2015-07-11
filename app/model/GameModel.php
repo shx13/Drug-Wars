@@ -28,12 +28,12 @@ class GameModel
     Session::set('stash_speed', 0);
     Session::set('stash_ludes', 0);
 
-    Session::set('coat_cocaine', 0);
-    Session::set('coat_heroin', 0);
-    Session::set('coat_acid', 0);
-    Session::set('coat_weed', 0);
-    Session::set('coat_speed', 0);
-    Session::set('coat_ludes', 0);
+    Session::set('coat_cocaine', 10);
+    Session::set('coat_heroin', 10);
+    Session::set('coat_acid', 10);
+    Session::set('coat_weed', 10);
+    Session::set('coat_speed', 10);
+    Session::set('coat_ludes', 10);
 
     GameModel::reroll_drugs_prices();
 
@@ -833,23 +833,22 @@ class GameModel
     elseif(Request::post('coat_ludes') != null)   { $transferToCoat[] = 'ludes'; }
     else { $transferToCoat = null; }
 
-    // if the player wants to transfer some drugs to the stash
+    // if the player wants to transfer something to the stash
     if($transferToStash != null) {
 
-      // transfer drugs to the coat
       foreach($transferToStash as $drug) {
 
         if(Request::post('stash_'.$drug) && Request::post('stash_'.$drug) > 0 && is_numeric(Request::post('stash_'.$drug))) {
-          // sprawdzenie czy kokaina jest
+          // check if there's enough merchandise to transfer
           if(Request::post('stash_'.$drug) > Session::get('coat_'.$drug)) {
             Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.strtoupper($drug).' ON YOU !');
             return false;
           }
-          // dodanie kokainy do skrytki
+          // add new merchandise to 'the stash'
           Session::set('stash_'.$drug, Session::get('stash_'.$drug) + Request::post('stash_'.$drug));
-          // odjecie kokainy z plaszcza
+          // remove merchandise from 'the coat'
           Session::set('coat_'.$drug, Session::get('coat_'.$drug) - Request::post('stash_'.$drug));
-          // dodanie miejsca do plaszcza
+          // add space to the coat
           Session::set('hold', Session::get('hold') + Request::post('stash_'.$drug));
         }
 
@@ -857,23 +856,22 @@ class GameModel
 
     }
 
-    // if the player wants to transfer some drugs from the stash to the coat
+    // if the player wants to transfer something from the stash to the coat
     if($transferToCoat != null) {
 
-      // transfer drugs to the stash
       foreach($transferToCoat as $drug) {
 
         if(Request::post('coat_'.$drug) && Request::post('coat_'.$drug) > 0 && is_numeric(Request::post('coat_'.$drug))) {
-          // sprawdzenie czy kokaina jest
+          // check if there's enough merchandise to transfer
           if(Request::post('coat_'.$drug) > Session::get('stash_'.$drug)) {
             Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.strtoupper($drug).' IN YOUR STASH !');
             return false;
           }
-          // dodanie kokainy do plaszcza
+          // add new merchandise to 'the coat'
           Session::set('coat_'.$drug, Session::get('coat_'.$drug) + Request::post('coat_'.$drug));
-          // odjecie miejsca z plaszcza
+          // remove space from the coat
           Session::set('hold', Session::get('hold') - Request::post('coat_'.$drug));
-          // odjecie kokainy ze skrytki
+          // remove merchandise from the stash
           Session::set('stash_'.$drug, Session::get('stash_'.$drug) - Request::post('coat_'.$drug));
         }
 
@@ -885,61 +883,81 @@ class GameModel
 
   }
 
-  // depozyt w banku
+
+  /*
+  * Deposit money
+  * 
+  * Deposit money on your bank account.
+  */
+
   public static function deposit() {
 
-    // walidacja
+    // validate
     if(!is_numeric(Request::post('how_much_deposit')) || Request::post('how_much_deposit') < 0) {
       return false;
     }
 
-    // sprawdzenie czy go na to stac
+    // check if the player has enough cash to deposit
     if(Request::post('how_much_deposit') > Session::get('cash')) {
       Session::add('feedback_negative', 'YOU CAN\'T AFFORD THIS DUDE !');
       return false;
     }
 
-    // odjecie kasy z plaszcza
+    // remove cash from the coat
     Session::set('cash', Session::get('cash') - Request::post('how_much_deposit'));
-    // dodanie kasy na konto
+    // deposit cash onto players bank account
     Session::set('bank', Session::get('bank') + Request::post('how_much_deposit'));
 
     return true;
 
   }
 
-  // pobranie kasy z banku
+
+  /*
+  * Withdraw money
+  * 
+  * Withdraw money from your bank account.
+  */
+
   public static function withdraw() {
 
-    // walidacja
+    // validate
     if(!is_numeric(Request::post('how_much_withdraw')) || Request::post('how_much_withdraw') < 0) {
       return false;
     }
 
-    // sprawdzenie czy go na to stac
+    // check if the player has enough cash to withdraw
     if(Request::post('how_much_withdraw') > Session::get('bank')) {
       Session::add('feedback_negative', 'YOU CAN\'T AFFORD THIS DUDE !');
       return false;
     }
 
-    // odjecie kasy z konta
+    // remove cash from the bank account
     Session::set('bank', Session::get('bank') - Request::post('how_much_withdraw'));
-    // dodanie kasy do plaszcza
+    // add cash to the coat
     Session::set('cash', Session::get('cash') + Request::post('how_much_withdraw'));
 
     return true;
 
   }
 
-  // zapisanie wyniku w rankingu
+
+  /*
+  * Update ranking
+  * 
+  * Add user score to the ranking.
+  */
+
   public static function update_ranking() {
 
+    // connect to the database
     $database = DatabaseFactory::getFactory()->getConnection();
 
+    // set the variables (sum of points and players name)
     $points = Session::get('cash') + Session::get('bank') - Session::get('debt');
-
     $name = Request::post('player_name', true);
 
+    // validate name
     if(strlen($name) <= 1) {
       Session::add('feedback_negative', 'NAME IS TOO SHORT (MIN. 2 CHARS)');
       return false;
@@ -955,7 +973,7 @@ class GameModel
 			return false;
     }
 
-    // zapisz wynik w bazie danych
+    // save the score to the database
 		$sql = "INSERT INTO ranking (id, name, points, date)
                     VALUES (:id, :name, :points, :date)";
 		$query = $database->prepare($sql);
@@ -966,7 +984,7 @@ class GameModel
 
 		$count =  $query->rowCount();
 
-    // jesli wszystko poszlo ok
+    // if everything is ok,  set the 'game' var to end_screen
 		if ($count == 1) {
       // zmien tryb gry
       Session::set('game','end_screen');
@@ -978,7 +996,11 @@ class GameModel
 
   }
 
-  // pobierz ranking
+
+  /*
+  * Get the ranking
+  */
+
   public static function get_ranking() {
 
     $database = DatabaseFactory::getFactory()->getConnection();

@@ -140,7 +140,7 @@ class GameController extends Controller
                   ));
   }
 
-  // ends the game
+  // ends the game (functions that are commented out are used to completely destroy the session instead of just setting game to null)
   public function end_game() {
     //session_unset();
     //session_destroy();
