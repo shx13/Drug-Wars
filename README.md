@@ -10,5 +10,9 @@ To create a new version of the game (or a translation), just go to app/config/ a
 You can see the live version with the options.drugwars.php file loaded at:
 https://gamegraveyard.net/drugwars/
 
+<<<<<<< HEAD
 ## To be fixed:
+=======
+#### To be fixed:
+>>>>>>> dev
 CSS needs to be fixed. The game was originally supposed to be as 'monospace' as possible, but it's hard to maintain with different options.php files.
