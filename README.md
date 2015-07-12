@@ -6,6 +6,12 @@ By default, it will load the configuration file of a game called Sailor Wars.
 
 To create a new version of the game (or a translation), just go to app/config/ and edit options.php file. There's a second file called options.drugwars.php, it contains the configuration of original 1984 game. If you want to use it, just change the name of the file to options.php.
 
+## Installation:
+
+1. Download or clone PHP-Wars repository.
+2. Run 'composer install' in its folder to set up autoloader and download dependencies.
+3. Run sql commands from _installdb folder (you can remove the folder afterwards). This will set up a database required by Top Scores.
+
 ## Live version:
 You can see the live version with the options.drugwars.php file loaded at:
 https://gamegraveyard.net/drugwars/
