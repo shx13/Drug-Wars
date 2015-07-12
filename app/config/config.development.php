@@ -2,8 +2,8 @@
 
 /*
 * Configuration for DEV environment
-* To create another configuration set just copy this file to config.production.php
-* Then add a SetEnv command in your webserver conf or in pub/.htaccess 
+* To create another configuration set just copy this file to config.XXX.php
+* Then add a SetEnv=XXX command in your webserver conf or in pub/.htaccess 
 */
 
 /*
