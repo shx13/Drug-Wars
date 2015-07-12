@@ -6,7 +6,7 @@
 
 $this->renderFeedbackMessages();
 echo '<h2>Congratulations, '.Session::get('user_name').' !!</h2>';
-echo '<h3>Your score: '.(Session::get('cash') - Session::get('debt')).'</h3>';
+echo '<h3>Your score: '.(Session::get('cash') - Session::get('debt') + Session::get('bank')).'</h3>';
 
 ?>
 

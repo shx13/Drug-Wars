@@ -16,7 +16,7 @@ $(document).ready(function() {
 
   // BUY DRUG #1
   $('#action_buy_1').click(function() {
-    $('.drug').html('COCAINE');
+    $('.drug').html($('#action_buy_1').text().slice(4));
     $('.afford').html(
       Math.floor($('#js_coat_cash').text() / $('#js_price_drug_1').text())
     );
@@ -27,7 +27,7 @@ $(document).ready(function() {
 
   // BUY DRUG #2
   $('#action_buy_2').click(function() {
-    $('.drug').html('HEROIN');
+    $('.drug').html($('#action_buy_2').text().slice(4));
     $('.afford').html(
       Math.floor($('#js_coat_cash').text() / $('#js_price_drug_2').text())
     );
@@ -38,7 +38,7 @@ $(document).ready(function() {
 
   // BUY DRUG #3
   $('#action_buy_3').click(function() {
-    $('.drug').html('ACID');
+    $('.drug').html($('#action_buy_3').text().slice(4));
     $('.afford').html(
       Math.floor($('#js_coat_cash').text() / $('#js_price_drug_3').text())
     );
@@ -49,7 +49,7 @@ $(document).ready(function() {
 
   // BUY DRUG #4
   $('#action_buy_4').click(function() {
-    $('.drug').html('WEED');
+    $('.drug').html($('#action_buy_4').text().slice(4));
     $('.afford').html(
       Math.floor($('#js_coat_cash').text() / $('#js_price_drug_4').text())
     );
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
   // BUY DRUG #5
   $('#action_buy_5').click(function() {
-    $('.drug').html('SPEED');
+    $('.drug').html($('#action_buy_5').text().slice(4));
     $('.afford').html(
       Math.floor($('#js_coat_cash').text() / $('#js_price_drug_5').text())
     );
@@ -71,7 +71,7 @@ $(document).ready(function() {
 
   // BUY DRUG #6
   $('#action_buy_6').click(function() {
-    $('.drug').html('LUDES');
+    $('.drug').html($('#action_buy_6').text().slice(4));
     $('.afford').html(
       Math.floor($('#js_coat_cash').text() / $('#js_price_drug_6').text())
     );
@@ -89,7 +89,7 @@ $(document).ready(function() {
 
   // SELL DRUG #1
   $('#action_sell_1').click(function() {
-    $('.drug').html('COCAINE');
+    $('.drug').html($('#action_sell_1').text().slice(4));
     $('#action_sell_what').hide();
     $('#action_sell_how_much').show();
     $('#sell_drugs_form').attr('action', 'http://localhost/DRUGWARS/GIT/game/sell/1/');
@@ -97,7 +97,7 @@ $(document).ready(function() {
 
   // SELL DRUG #2
   $('#action_sell_2').click(function() {
-    $('.drug').html('HEROIN');
+    $('.drug').html($('#action_sell_2').text().slice(4));
     $('#action_sell_what').hide();
     $('#action_sell_how_much').show();
     $('#sell_drugs_form').attr('action', 'http://localhost/DRUGWARS/GIT/game/sell/2/');
@@ -105,7 +105,7 @@ $(document).ready(function() {
 
   // SELL DRUG #3
   $('#action_sell_3').click(function() {
-    $('.drug').html('ACID');
+    $('.drug').html($('#action_sell_3').text().slice(4));
     $('#action_sell_what').hide();
     $('#action_sell_how_much').show();
     $('#sell_drugs_form').attr('action', 'http://localhost/DRUGWARS/GIT/game/sell/3/');
@@ -113,7 +113,7 @@ $(document).ready(function() {
 
   // SELL DRUG #4
   $('#action_sell_4').click(function() {
-    $('.drug').html('WEED');
+    $('.drug').html($('#action_sell_4').text().slice(4));
     $('#action_sell_what').hide();
     $('#action_sell_how_much').show();
     $('#sell_drugs_form').attr('action', 'http://localhost/DRUGWARS/GIT/game/sell/4/');
@@ -121,7 +121,7 @@ $(document).ready(function() {
 
   // SELL DRUG #5
   $('#action_sell_5').click(function() {
-    $('.drug').html('SPEED');
+    $('.drug').html($('#action_sell_5').text().slice(4));
     $('#action_sell_what').hide();
     $('#action_sell_how_much').show();
     $('#sell_drugs_form').attr('action', 'http://localhost/DRUGWARS/GIT/game/sell/5/');
@@ -129,7 +129,7 @@ $(document).ready(function() {
 
   // SELL DRUG #6
   $('#action_sell_6').click(function() {
-    $('.drug').html('LUDES');
+    $('.drug').html($('#action_sell_6').text().slice(4));
     $('#action_sell_what').hide();
     $('#action_sell_how_much').show();
     $('#sell_drugs_form').attr('action', 'http://localhost/DRUGWARS/GIT/game/sell/6/');

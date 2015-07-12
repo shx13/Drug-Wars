@@ -11,7 +11,7 @@ class GameModel
 
   /*
   * Starts new game - set the main game var ($_SESSION['game']) to 'on'
-  * Set all other stats, set drugs prices
+  * Set all other stats, set merchandise prices
   * All game variables are stored in session 
   */
 
@@ -21,21 +21,21 @@ class GameModel
     Session::set('user_location', Options::get('LOCATION_1'));
     Session::set('user_action', null);
 
-    Session::set('stash_cocaine', 0);
-    Session::set('stash_heroin', 0);
-    Session::set('stash_acid', 0);
-    Session::set('stash_weed', 0);
-    Session::set('stash_speed', 0);
-    Session::set('stash_ludes', 0);
+    Session::set('stash_product_1', 10);
+    Session::set('stash_product_2', 10);
+    Session::set('stash_product_3', 10);
+    Session::set('stash_product_4', 10);
+    Session::set('stash_product_5', 10);
+    Session::set('stash_product_6', 10);
 
-    Session::set('coat_cocaine', 0);
-    Session::set('coat_heroin', 0);
-    Session::set('coat_acid', 0);
-    Session::set('coat_weed', 0);
-    Session::set('coat_speed', 0);
-    Session::set('coat_ludes', 0);
+    Session::set('coat_product_1', 10);
+    Session::set('coat_product_2', 10);
+    Session::set('coat_product_3', 10);
+    Session::set('coat_product_4', 10);
+    Session::set('coat_product_5', 10);
+    Session::set('coat_product_6', 10);
 
-    GameModel::reroll_drugs_prices();
+    GameModel::reroll_products_prices();
 
     Session::set('hold', 100);
 
@@ -52,17 +52,16 @@ class GameModel
 
 
   /*
-  * Re-rolls drugs prices. To be changed, prices should be
-  * taken from separate options file.
+  * Re-rolls and sets new prices of all products.
   */
 
-  public static function reroll_drugs_prices() {
-    Session::set('price_cocaine', mt_rand(15000, 30000));
-    Session::set('price_heroin',  mt_rand(5000,  14000));
-    Session::set('price_acid',    mt_rand(1000,  4500));
-    Session::set('price_weed',    mt_rand(300,   900));
-    Session::set('price_speed',   mt_rand(70,    250));
-    Session::set('price_ludes',   mt_rand(10,    60));
+  public static function reroll_products_prices() {
+    Session::set('price_product_1', mt_rand(Options::get('PRODUCT_1_MIN_PRICE'), Options::get('PRODUCT_1_MAX_PRICE')));
+    Session::set('price_product_2', mt_rand(Options::get('PRODUCT_2_MIN_PRICE'), Options::get('PRODUCT_2_MAX_PRICE')));
+    Session::set('price_product_3', mt_rand(Options::get('PRODUCT_3_MIN_PRICE'), Options::get('PRODUCT_3_MAX_PRICE')));
+    Session::set('price_product_4', mt_rand(Options::get('PRODUCT_4_MIN_PRICE'), Options::get('PRODUCT_4_MAX_PRICE')));
+    Session::set('price_product_5', mt_rand(Options::get('PRODUCT_5_MIN_PRICE'), Options::get('PRODUCT_5_MAX_PRICE')));
+    Session::set('price_product_6', mt_rand(Options::get('PRODUCT_6_MIN_PRICE'), Options::get('PRODUCT_6_MAX_PRICE')));
     return true;
   }
 
@@ -124,7 +123,7 @@ class GameModel
     }
 
     // 5. Re-roll drugs prices
-    GameModel::reroll_drugs_prices();
+    GameModel::reroll_products_prices();
 
     // 6. Check for random encounters
     $rand = mt_rand(1,100);
@@ -164,27 +163,27 @@ class GameModel
     switch($itemId) {
       case 1:
         $item_name = 'COCAINE';
-        $item_price = Session::get('price_cocaine');
+        $item_price = Session::get('price_product_1');
         break;
       case 2:
         $item_name = 'HEROIN';
-        $item_price = Session::get('price_heroin');
+        $item_price = Session::get('price_product_2');
         break;
       case 3:
         $item_name = 'ACID';
-        $item_price = Session::get('price_acid');
+        $item_price = Session::get('price_product_3');
         break;
       case 4:
         $item_name = 'WEED';
-        $item_price = Session::get('price_weed');
+        $item_price = Session::get('price_product_4');
         break;
       case 5:
         $item_name = 'SPEED';
-        $item_price = Session::get('price_speed');
+        $item_price = Session::get('price_product_5');
         break;
       case 6:
         $item_name = 'LUDES';
-        $item_price = Session::get('price_ludes');
+        $item_price = Session::get('price_product_6');
         break;
     }
 
@@ -211,22 +210,22 @@ class GameModel
     // 7. Add drugs to the coat
     switch($itemId) {
       case 1:
-        Session::set('coat_cocaine', Session::get('coat_cocaine') + Request::post('quantity'));
+        Session::set('coat_product_1', Session::get('coat_product_1') + Request::post('quantity'));
         break;
       case 2:
-        Session::set('coat_heroin', Session::get('coat_heroin') + Request::post('quantity'));
+        Session::set('coat_product_2', Session::get('coat_product_2') + Request::post('quantity'));
         break;
       case 3:
-        Session::set('coat_acid', Session::get('coat_acid') + Request::post('quantity'));
+        Session::set('coat_product_3', Session::get('coat_product_3') + Request::post('quantity'));
         break;
       case 4:
-        Session::set('coat_weed', Session::get('coat_weed') + Request::post('quantity'));
+        Session::set('coat_product_4', Session::get('coat_product_4') + Request::post('quantity'));
         break;
       case 5:
-        Session::set('coat_speed', Session::get('coat_speed') + Request::post('quantity'));
+        Session::set('coat_product_5', Session::get('coat_product_5') + Request::post('quantity'));
         break;
       case 6:
-        Session::set('coat_ludes', Session::get('coat_ludes') + Request::post('quantity'));
+        Session::set('coat_product_6', Session::get('coat_product_6') + Request::post('quantity'));
         break;
     }
   }
@@ -257,40 +256,46 @@ class GameModel
     // 2. Check what drugs the user wants to sell and get their local prices
     switch($itemId) {
       case 1:
+        $item_id = 'product_1';
         $item_name = 'COCAINE';
-        $item_price = Session::get('price_cocaine');
+        $item_price = Session::get('price_product_1');
         break;
       case 2:
+        $item_id = 'product_2';
         $item_name = 'HEROIN';
-        $item_price = Session::get('price_heroin');
+        $item_price = Session::get('price_product_2');
         break;
       case 3:
+        $item_id = 'product_3';
         $item_name = 'ACID';
-        $item_price = Session::get('price_acid');
+        $item_price = Session::get('price_product_3');
         break;
       case 4:
+        $item_id = 'product_4';
         $item_name = 'WEED';
-        $item_price = Session::get('price_weed');
+        $item_price = Session::get('price_product_4');
         break;
       case 5:
+        $item_id = 'product_5';
         $item_name = 'SPEED';
-        $item_price = Session::get('price_speed');
+        $item_price = Session::get('price_product_5');
         break;
       case 6:
+        $item_id = 'product_6';
         $item_name = 'LUDES';
-        $item_price = Session::get('price_ludes');
+        $item_price = Session::get('price_product_6');
         break;
     }
 
     // 3. Check if the user actually has the drugs for sale
-    if(Session::get('coat_'.strtolower($item_name)) < Request::post('quantity')) {
+    if(Session::get('coat_'.strtolower($item_id)) < Request::post('quantity')) {
       Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MANY, DUDE !');
       Redirect::to('game/');
       return false;
     }
 
     // 4. Remove drugs from the coat
-    Session::set('coat_'.strtolower($item_name), Session::get('coat_'.strtolower($item_name)) - Request::post('quantity'));
+    Session::set('coat_'.strtolower($item_id), Session::get('coat_'.strtolower($item_id)) - Request::post('quantity'));
 
     // 5. Add space to the coat
     Session::set('hold', Session::get('hold') + Request::post('quantity'));
@@ -347,41 +352,42 @@ class GameModel
 
   public static function random_encounter() {
 
-    $dice = mt_rand(1,20);
+    // $dice = mt_rand(1,20);
+    $dice = mt_rand(20,20);
     $multiplier = mt_rand(2,10);
 
     switch($dice) {
       case 1:
-        Session::add('feedback_negative', 'COPS MADE A BIG COKE BUST !!  PRICES ARE OUTRAGEOUS !!');
-        Session::set('price_cocaine', Session::get('price_cocaine') * $multiplier);
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_01'));
+        Session::set('price_product_1', Session::get('price_product_1') * $multiplier);
       break;
 
       case 2:
-        Session::add('feedback_negative', 'COLOMBIAN FREIGHTER DUSTED THE COAST GUARD !!  WEED PRICES HAVE BOTTOMED OUT !!');
-        Session::set('price_weed', floor(Session::get('price_weed') / $multiplier));
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_02'));
+        Session::set('price_product_4', floor(Session::get('price_product_4') / $multiplier));
       break;
 
       case 3:
         $daysLost = mt_rand(1,3);
-        Session::add('feedback_negative', 'POLICE DOGS CHASE YOU FOR '.$daysLost.' BLOCKS !!');
+        Session::add('feedback_negative', str_replace('[daysLost]',$daysLost,Options::get('TXT_RAND_ENCOUNTER_03')));
         Session::set('game_date', strtotime('+'.$daysLost.' day', Session::get('game_date')));
       break;
 
       case 4:
-        Session::add('feedback_negative', 'YOU DROPPED SOME DRUGS !!  THAT\'S A DRAG MAN !!');
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_04'));
 
         // mt_rand runs every time so it can get the different number for each drugs
         $drugsDropped = mt_rand(1,10);
         // remove dropped drugs
-        Session::set('coat_cocaine', Session::get('coat_cocaine') - $drugsDropped);
+        Session::set('coat_product_1', Session::get('coat_product_1') - $drugsDropped);
         // if there's more drugs dropped than the player possess
-        if(Session::get('coat_cocaine') < 0) {
+        if(Session::get('coat_product_1') < 0) {
           // get a new value of dropped drugs (above 0)
-          $drugsDropped = $drugsDropped + Session::get('coat_cocaine');
+          $drugsDropped = $drugsDropped + Session::get('coat_product_1');
           // add space to the coat
           Session::set('hold', Session::get('hold') + $drugsDropped);
           // set drug quantity to zero
-          Session::set('coat_cocaine', 0);
+          Session::set('coat_product_1', 0);
         }
 
         // if there are still drugs left
@@ -394,73 +400,73 @@ class GameModel
         // can be automated better
 
         $drugsDropped = mt_rand(1,10);
-        Session::set('coat_heroin', Session::get('coat_heroin') - $drugsDropped);
-        if(Session::get('coat_heroin') < 0) {
-          $drugsDropped = $drugsDropped + Session::get('coat_heroin');
+        Session::set('coat_product_2', Session::get('coat_product_2') - $drugsDropped);
+        if(Session::get('coat_product_2') < 0) {
+          $drugsDropped = $drugsDropped + Session::get('coat_product_2');
           Session::set('hold', Session::get('hold') + $drugsDropped);
-          Session::set('coat_heroin', 0);
+          Session::set('coat_product_2', 0);
         } else {
           Session::set('hold', Session::get('hold') + $drugsDropped);
         }
 
         $drugsDropped = mt_rand(1,10);        
-        Session::set('coat_acid', Session::get('coat_acid') - $drugsDropped);
-        if(Session::get('coat_acid') < 0) {
-          $drugsDropped = $drugsDropped + Session::get('coat_acid');
+        Session::set('coat_product_3', Session::get('coat_product_3') - $drugsDropped);
+        if(Session::get('coat_product_3') < 0) {
+          $drugsDropped = $drugsDropped + Session::get('coat_product_3');
           Session::set('hold', Session::get('hold') + $drugsDropped);
-          Session::set('coat_acid', 0);
+          Session::set('coat_product_3', 0);
         } else {
           Session::set('hold', Session::get('hold') + $drugsDropped);
         }
 
         $drugsDropped = mt_rand(1,10);        
-        Session::set('coat_weed', Session::get('coat_weed') - $drugsDropped);
-        if(Session::get('coat_weed') < 0) {
-          $drugsDropped = $drugsDropped + Session::get('coat_weed');
+        Session::set('coat_product_4', Session::get('coat_product_4') - $drugsDropped);
+        if(Session::get('coat_product_4') < 0) {
+          $drugsDropped = $drugsDropped + Session::get('coat_product_4');
           Session::set('hold', Session::get('hold') + $drugsDropped);
-          Session::set('coat_weed', 0);
+          Session::set('coat_product_4', 0);
         } else {
           Session::set('hold', Session::get('hold') + $drugsDropped);
         }
 
         $drugsDropped = mt_rand(1,10);        
-        Session::set('coat_speed', Session::get('coat_speed') - $drugsDropped);
-        if(Session::get('coat_speed') < 0) {
-          $drugsDropped = $drugsDropped + Session::get('coat_speed');
+        Session::set('coat_product_5', Session::get('coat_product_5') - $drugsDropped);
+        if(Session::get('coat_product_5') < 0) {
+          $drugsDropped = $drugsDropped + Session::get('coat_product_5');
           Session::set('hold', Session::get('hold') + $drugsDropped);
-          Session::set('coat_speed', 0);
+          Session::set('coat_product_5', 0);
         } else {
           Session::set('hold', Session::get('hold') + $drugsDropped);
         }
 
         $drugsDropped = mt_rand(1,10);        
-        Session::set('coat_ludes', Session::get('coat_ludes') - $drugsDropped);
-        if(Session::get('coat_ludes') < 0) {
-          $drugsDropped = $drugsDropped + Session::get('coat_ludes');
+        Session::set('coat_product_6', Session::get('coat_product_6') - $drugsDropped);
+        if(Session::get('coat_product_6') < 0) {
+          $drugsDropped = $drugsDropped + Session::get('coat_product_6');
           Session::set('hold', Session::get('hold') + $drugsDropped);
-          Session::set('coat_ludes', 0);
+          Session::set('coat_product_6', 0);
         } else {
           Session::set('hold', Session::get('hold') + $drugsDropped);
         }
       break;
 
       case 5:
-        Session::add('feedback_negative', 'YOUR MAMA MADE SOME BROWNIES AND USED YOUR WEED !!<br>THEY WERE GREAT !!');
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_05'));
         $weedLost = mt_rand(1,20);
-        Session::set('coat_weed', Session::get('coat_weed') - $weedLost);
+        Session::set('coat_product_4', Session::get('coat_product_4') - $weedLost);
         // if the quantity of weed dropped below zero
-        if(Session::get('coat_weed') < 0) {
-          $weedLost = $weedLost + Session::get('coat_weed');
+        if(Session::get('coat_product_4') < 0) {
+          $weedLost = $weedLost + Session::get('coat_product_4');
           Session::set('hold', Session::get('hold') + $weedLost);
-          Session::set('coat_weed', 0);
+          Session::set('coat_product_4', 0);
         } else {
           Session::set('hold', Session::get('hold') + $weedLost);
         }
       break;
 
       case 6:
-        Session::add('feedback_negative', 'PIGS ARE SELLING CHEAP HEROIN FROM LAST WEEKS RAID !!');
-        Session::set('price_heroin', floor(Session::get('price_heroin') / $multiplier));
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_06'));
+        Session::set('price_product_2', floor(Session::get('price_product_2') / $multiplier));
       break;
 
       case 7:
@@ -475,63 +481,63 @@ class GameModel
 
           // kokaina
           case 1:
-            Session::set('coat_cocaine', Session::get('coat_cocaine') + $findHowMany);
-            $findWhat = 'COCAINE';
+            Session::set('coat_product_1', Session::get('coat_product_1') + $findHowMany);
+            $findWhat = Options::get('PRODUCT_1');
           break;
 
           // heroina
           case 2:
-            Session::set('coat_heroin', Session::get('coat_heroin') + $findHowMany);
-            $findWhat = 'HEROIN';
+            Session::set('coat_product_2', Session::get('coat_product_2') + $findHowMany);
+            $findWhat = Options::get('PRODUCT_2');
           break;
 
           // acid
           case 3:
-            Session::set('coat_acid', Session::get('coat_acid') + $findHowMany);
-            $findWhat = 'ACID';
+            Session::set('coat_product_3', Session::get('coat_product_3') + $findHowMany);
+            $findWhat = Options::get('PRODUCT_3');
           break;
 
           // weed
           case 4:
-            Session::set('coat_weed', Session::get('coat_weed') + $findHowMany);
-            $findWhat = 'WEED';
+            Session::set('coat_product_4', Session::get('coat_product_4') + $findHowMany);
+            $findWhat = Options::get('PRODUCT_4');
           break;
 
           // speed
           case 5:
-            Session::set('coat_speed', Session::get('coat_speed') + $findHowMany);
-            $findWhat = 'SPEED';
+            Session::set('coat_product_5', Session::get('coat_product_5') + $findHowMany);
+            $findWhat = Options::get('PRODUCT_5');
           break;
 
           // ludes
           case 6:
-            Session::set('coat_ludes', Session::get('coat_ludes') + $findHowMany);
-            $findWhat = 'LUDES';
+            Session::set('coat_product_6', Session::get('coat_product_6') + $findHowMany);
+            $findWhat = Options::get('PRODUCT_6');
           break;
 
         }
         // remove space from the coat
         Session::set('hold', Session::get('hold') - $findHowMany);
-        Session::add('feedback_negative', 'YOU FIND '.$findHowMany.' UNITS OF '.$findWhat.' ON A DEAD DUDE IN THE SUBWAY !!');
+        Session::add('feedback_negative', str_replace('[findWhat]',$findWhat,(str_replace('[findHowMany]',$findHowMany,Options::get('TXT_RAND_ENCOUNTER_07')))));
       break;
 
       case 8:
-        Session::add('feedback_negative', 'RIVAL DRUG DEALERS RADED A PHARMACY AND ARE SELLING  C H E A P   L U D E S !!!');
-        Session::set('price_ludes', floor(Session::get('price_ludes') / $multiplier));
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_08'));
+        Session::set('price_product_6', floor(Session::get('price_product_6') / $multiplier));
       break;
 
       case 9:
-        Session::add('feedback_negative', 'ADDICTS ARE BUYING HEROIN AT OURAGEOUS PRICES !!');
-        Session::set('price_heroin', Session::get('price_heroin') * $multiplier);
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_09'));
+        Session::set('price_product_2', Session::get('price_product_2') * $multiplier);
       break;
 
       case 10:
-        Session::add('feedback_negative', 'THE MARKET HAS BEEN FLOODED WITH CHEAP HOME MADE ACID !!!');
-        Session::set('price_acid', floor(Session::get('price_acid') / $multiplier));
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_10'));
+        Session::set('price_product_3', floor(Session::get('price_product_3') / $multiplier));
       break;
 
       case 11:
-        Session::add('feedback_negative', 'YOU WERE MUGGED IN THE SUBWAY !!');
+        Session::add('feedback_negative', Options::get('TXT_RAND_ENCOUNTER_11'));
         Session::set('cash', floor(Session::get('cash') / $multiplier));
       break;
 
@@ -816,21 +822,21 @@ class GameModel
   public static function transfer_drugs() {
 
     // find out which drug the player wants to transfer from coat to the stash
-    if    (Request::post('stash_cocaine') != null) { $transferToStash[] = 'cocaine'; }
-    elseif(Request::post('stash_heroin') != null)  { $transferToStash[] = 'heroin'; }
-    elseif(Request::post('stash_acid') != null)    { $transferToStash[] = 'acid'; }
-    elseif(Request::post('stash_weed') != null)    { $transferToStash[] = 'weed'; }
-    elseif(Request::post('stash_speed') != null)   { $transferToStash[] = 'speed'; }
-    elseif(Request::post('stash_ludes') != null)   { $transferToStash[] = 'ludes'; }
+    if    (Request::post('stash_product_1') != null) { $transferToStash[] = 'product_1'; }
+    elseif(Request::post('stash_product_2') != null) { $transferToStash[] = 'product_2'; }
+    elseif(Request::post('stash_product_3') != null) { $transferToStash[] = 'product_3'; }
+    elseif(Request::post('stash_product_4') != null) { $transferToStash[] = 'product_4'; }
+    elseif(Request::post('stash_product_5') != null) { $transferToStash[] = 'product_5'; }
+    elseif(Request::post('stash_product_6') != null) { $transferToStash[] = 'product_6'; }
     else { $transferToStash = null; }
 
     // find out which drug the player wants to transfer from stash to the coat
-    if    (Request::post('coat_cocaine') != null) { $transferToCoat[] = 'cocaine'; }
-    elseif(Request::post('coat_heroin') != null)  { $transferToCoat[] = 'heroin'; }
-    elseif(Request::post('coat_acid') != null)    { $transferToCoat[] = 'acid'; }
-    elseif(Request::post('coat_weed') != null)    { $transferToCoat[] = 'weed'; }
-    elseif(Request::post('coat_speed') != null)   { $transferToCoat[] = 'speed'; }
-    elseif(Request::post('coat_ludes') != null)   { $transferToCoat[] = 'ludes'; }
+    if    (Request::post('coat_product_1') != null) { $transferToCoat[] = 'product_1'; }
+    elseif(Request::post('coat_product_2') != null) { $transferToCoat[] = 'product_2'; }
+    elseif(Request::post('coat_product_3') != null) { $transferToCoat[] = 'product_3'; }
+    elseif(Request::post('coat_product_4') != null) { $transferToCoat[] = 'product_4'; }
+    elseif(Request::post('coat_product_5') != null) { $transferToCoat[] = 'product_5'; }
+    elseif(Request::post('coat_product_6') != null) { $transferToCoat[] = 'product_6'; }
     else { $transferToCoat = null; }
 
     // if the player wants to transfer something to the stash
@@ -841,7 +847,7 @@ class GameModel
         if(Request::post('stash_'.$drug) && Request::post('stash_'.$drug) > 0 && is_numeric(Request::post('stash_'.$drug))) {
           // check if there's enough merchandise to transfer
           if(Request::post('stash_'.$drug) > Session::get('coat_'.$drug)) {
-            Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.strtoupper($drug).' ON YOU !');
+            Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.(Options::get(strtoupper($drug))).' ON YOU !');
             return false;
           }
           // add new merchandise to 'the stash'
@@ -864,7 +870,7 @@ class GameModel
         if(Request::post('coat_'.$drug) && Request::post('coat_'.$drug) > 0 && is_numeric(Request::post('coat_'.$drug))) {
           // check if there's enough merchandise to transfer
           if(Request::post('coat_'.$drug) > Session::get('stash_'.$drug)) {
-            Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.strtoupper($drug).' IN YOUR STASH !');
+            Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MUCH '.(Options::get(strtoupper($drug))).' IN YOUR STASH !');
             return false;
           }
           // add new merchandise to 'the coat'
