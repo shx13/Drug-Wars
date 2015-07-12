@@ -118,6 +118,12 @@ return array(
 
   'TXT_HARDASS_DAMAGE' => 'DAMAGE',
   'TXT_HARDASS_ENEMY' => 'PIRATES',
-  'TXT_HARDASS_GUNS' => 'CANNONS'
+  'TXT_HARDASS_GUNS' => 'CANNONS',
+
+  'TXT_INSTRUCTIONS' => "This is a game of buying, selling, and fighting. The object of the game is to
+pay off your debt to the loan shark. Then, make as much money as you can in a 1 month period.
+Watch the sea,  as  you  might  run  into  the pirates !!  Your main warehouse will be in Dublin.
+
+The prices of merchandise per unit are:\r\n"
 
 );

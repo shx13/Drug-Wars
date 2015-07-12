@@ -120,4 +120,12 @@ return array(
   'TXT_HARDASS_ENEMY' => 'COPS',
   'TXT_HARDASS_GUNS' => 'GUNS'
 
+    'TXT_INSTRUCTIONS' => "This is a game of buying, selling, and fighting. The object of the game is to
+pay off your debt to the loan shark. Then, make as much money as you can in
+a 1 month period. If you deal too heavily in  drugs,  you  might  run  into
+the police !!  Your main drug stash will be in the Bronx. (It's a nice
+neighborhood)!
+
+The prices of drugs per unit are:\r\n"
+
 );
