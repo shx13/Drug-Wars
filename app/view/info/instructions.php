@@ -6,12 +6,12 @@
 
 The prices of drugs per unit are:
 
-     COCAINE     15000-30000
-     HEROIN      5000-14000
-     ACID        1000-4500
-     WEED        300-900
-     SPEED       70-250
-     LUDES       10-60
+     <?php echo Options::get('PRODUCT_1'); ?>     15000-30000
+     <?php echo Options::get('PRODUCT_2'); ?>      5000-14000
+     <?php echo Options::get('PRODUCT_3'); ?>        1000-4500
+     <?php echo Options::get('PRODUCT_4'); ?>        300-900
+     <?php echo Options::get('PRODUCT_5'); ?>       70-250
+     <?php echo Options::get('PRODUCT_6'); ?>       10-60
 
 </p>
 

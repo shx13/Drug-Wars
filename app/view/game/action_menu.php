@@ -4,14 +4,14 @@
   <p>HEY DUDE, THE PRICES OF DRUGS HERE ARE:</p>
   
   <ul>
-    <li>COCAINE &nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_1"><?php echo Session::get('price_cocaine'); ?></span></li>
-    <li>HEROIN  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_2"><?php echo Session::get('price_heroin'); ?></span></li>
-    <li>ACID    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_3"><?php echo Session::get('price_acid'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_1'); ?> &nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_1"><?php echo Session::get('price_cocaine'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_2'); ?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_2"><?php echo Session::get('price_heroin'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_3'); ?>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_3"><?php echo Session::get('price_acid'); ?></span></li>
   </ul>
   <ul>
-    <li>WEED    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_4"><?php echo Session::get('price_weed'); ?></span></li>
-    <li>SPEED   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_5"><?php echo Session::get('price_speed'); ?></span></li>
-    <li>LUDES   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_6"><?php echo Session::get('price_ludes'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_4'); ?>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_4"><?php echo Session::get('price_weed'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_5'); ?>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_5"><?php echo Session::get('price_speed'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_6'); ?>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_6"><?php echo Session::get('price_ludes'); ?></span></li>
   </ul>
 </div>
 
@@ -54,32 +54,32 @@
         <th>TO TRENCH COAT</th>
       </tr>
       <tr>
-        <td>COCAINE</td>
+        <td>'.Options::get('PRODUCT_1').'</td>
         <td><input name="stash_cocaine" type="text"></td>
         <td><input name="coat_cocaine" type="text"></td>
       </tr>
       <tr>
-        <td>HEROIN</td>
+        <td>'.Options::get('PRODUCT_2').'</td>
         <td><input name="stash_heroin" type="text"></td>
         <td><input name="coat_heroin" type="text"></td>
       </tr>
       <tr>
-        <td>ACID</td>
+        <td>'.Options::get('PRODUCT_3').'</td>
         <td><input name="stash_acid" type="text"></td>
         <td><input name="coat_acid" type="text"></td>
       </tr>
       <tr>
-        <td>WEED</td>
+        <td>'.Options::get('PRODUCT_4').'</td>
         <td><input name="stash_weed" type="text"></td>
         <td><input name="coat_weed" type="text"></td>
       </tr>
       <tr>
-        <td>SPEED</td>
+        <td>'.Options::get('PRODUCT_5').'</td>
         <td><input name="stash_speed" type="text"></td>
         <td><input name="coat_speed" type="text"></td>
       </tr>
       <tr>
-        <td>LUDES</td>
+        <td>'.Options::get('PRODUCT_6').'</td>
         <td><input name="stash_ludes" type="text"></td>
         <td><input name="coat_ludes" type="text"></td>
       </tr>
