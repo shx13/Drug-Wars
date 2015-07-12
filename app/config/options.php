@@ -10,6 +10,7 @@
 return array(
   // MAIN OPTIONS
   'GAME_NAME'       => 'SAILOR WARS',
+  'GAME_SUBTITLE'   => '<a href="https://gamegraveyard.net">GameGraveyard.net</a> presents...<br>Remake of John E. Dell 1984 Cult Game',
   'START_GAME_DATE' => strtotime('23-8-1869'),
 	'END_GAME_DATE'   => strtotime('23-9-1869'),
 
