@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="utf-8" />
-<title>Drug Wars</title>
+<title><?php echo Options::get('GAME_NAME'); ?></title>
 
 <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>pub/css/reset.css">
 <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>pub/css/style.css">

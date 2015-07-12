@@ -4,14 +4,14 @@
   <p><?php echo Options::get('TXT_WELCOME'); ?></p>
   
   <ul>
-    <li><?php echo Options::get('PRODUCT_1'); ?> &nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_1"><?php echo Session::get('price_product_1'); ?></span></li>
-    <li><?php echo Options::get('PRODUCT_2'); ?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_2"><?php echo Session::get('price_product_2'); ?></span></li>
-    <li><?php echo Options::get('PRODUCT_3'); ?>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_3"><?php echo Session::get('price_product_3'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_1'); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_1"><?php echo Session::get('price_product_1'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_2'); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_2"><?php echo Session::get('price_product_2'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_3'); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_3"><?php echo Session::get('price_product_3'); ?></span></li>
   </ul>
   <ul>
-    <li><?php echo Options::get('PRODUCT_4'); ?>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_4"><?php echo Session::get('price_product_4'); ?></span></li>
-    <li><?php echo Options::get('PRODUCT_5'); ?>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_5"><?php echo Session::get('price_product_5'); ?></span></li>
-    <li><?php echo Options::get('PRODUCT_6'); ?>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_6"><?php echo Session::get('price_product_6'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_4'); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_4"><?php echo Session::get('price_product_4'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_5'); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_5"><?php echo Session::get('price_product_5'); ?></span></li>
+    <li><?php echo Options::get('PRODUCT_6'); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="js_price_drug_6"><?php echo Session::get('price_product_6'); ?></span></li>
   </ul>
 </div>
 
@@ -115,15 +115,15 @@
 </p>
 
 <div id="action_jet_where">
-<p><?php echo Options::get('TXT_OPTIONS_JET_WHERE'); ?>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/1/">1)  <?php echo Options::get('LOCATION_1'); ?></a>        <a href="<?php echo Config::get('URL'); ?>game/jet_to/2/">2)  <?php echo Options::get('LOCATION_2'); ?></a>          <a href="<?php echo Config::get('URL'); ?>game/jet_to/3/">3)  <?php echo Options::get('LOCATION_3'); ?></a>
-                  <a href="<?php echo Config::get('URL'); ?>game/jet_to/4/">4)  <?php echo Options::get('LOCATION_4'); ?></a>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/5/">5)  <?php echo Options::get('LOCATION_5'); ?></a>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/6/">6)  <?php echo Options::get('LOCATION_6'); ?></a>
+<p><?php echo Options::get('TXT_OPTIONS_JET_WHERE'); ?>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/1/">1)  <?php echo Options::get('LOCATION_1'); ?></a>        <a href="<?php echo Config::get('URL'); ?>game/jet_to/2/">2)  <?php echo Options::get('LOCATION_2'); ?></a>        <a href="<?php echo Config::get('URL'); ?>game/jet_to/3/">3)  <?php echo Options::get('LOCATION_3'); ?></a>
+                     <a href="<?php echo Config::get('URL'); ?>game/jet_to/4/">4)  <?php echo Options::get('LOCATION_4'); ?></a>      <a href="<?php echo Config::get('URL'); ?>game/jet_to/5/">5)  <?php echo Options::get('LOCATION_5'); ?></a>      <a href="<?php echo Config::get('URL'); ?>game/jet_to/6/">6)  <?php echo Options::get('LOCATION_6'); ?></a>
 
 <a class="back_to_menu" href="#">Back to main menu</a></p>
 </div>
 
 <div id="action_buy_box">
 <p id="action_buy_what">WHAT WILL YOU BUY ?    <a href="#" id="action_buy_1">1)  <?php echo Options::get('PRODUCT_1'); ?></a>        <a href="#" id="action_buy_2">2)  <?php echo Options::get('PRODUCT_2'); ?></a>          <a href="#" id="action_buy_3">3)  <?php echo Options::get('PRODUCT_3'); ?></a>
-                       <a href="#" id="action_buy_4">4)  <?php echo Options::get('PRODUCT_4'); ?></a>           <a href="#" id="action_buy_5">5)  <?php echo Options::get('PRODUCT_5'); ?></a>           <a href="#" id="action_buy_6">6)  <?php echo Options::get('PRODUCT_6'); ?></a></p>
+                       <a href="#" id="action_buy_4">4)  <?php echo Options::get('PRODUCT_4'); ?></a>         <a href="#" id="action_buy_5">5)  <?php echo Options::get('PRODUCT_5'); ?></a>          <a href="#" id="action_buy_6">6)  <?php echo Options::get('PRODUCT_6'); ?></a></p>
 
 <div id="action_buy_how_much">
   HOW MUCH <span class="drug"></span> WILL YOU BUY? YOU CAN AFFORD ( <span class="afford"></span> )
@@ -137,7 +137,7 @@
 
 <div id="action_sell_box">
 <p id="action_sell_what">WHAT WILL YOU SELL ?   <a href="#" id="action_sell_1">1)  <?php echo Options::get('PRODUCT_1'); ?></a>        <a href="#" id="action_sell_2">2)  <?php echo Options::get('PRODUCT_2'); ?></a>          <a href="#" id="action_sell_3">3)  <?php echo Options::get('PRODUCT_3'); ?></a>
-                       <a href="#" id="action_sell_4">4)  <?php echo Options::get('PRODUCT_4'); ?></a>           <a href="#" id="action_sell_5">5)  <?php echo Options::get('PRODUCT_5'); ?></a>           <a href="#" id="action_sell_6">6)  <?php echo Options::get('PRODUCT_6'); ?></a></p>
+                       <a href="#" id="action_sell_4">4)  <?php echo Options::get('PRODUCT_4'); ?></a>         <a href="#" id="action_sell_5">5)  <?php echo Options::get('PRODUCT_5'); ?></a>          <a href="#" id="action_sell_6">6)  <?php echo Options::get('PRODUCT_6'); ?></a></p>
 
 <div id="action_sell_how_much">
   HOW MUCH <span class="drug"></span> WILL YOU SELL?

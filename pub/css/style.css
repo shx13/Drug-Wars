@@ -84,12 +84,7 @@ body {
 
 #instructions {
   width: 800px;
-  height: 400px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -200px;
-  margin-left: -400px;
+  margin: auto;
   outline: 0px solid red;
 }
 
@@ -110,6 +105,22 @@ body {
 #instructions a:hover {
   color: #dc2D3E;
   text-decoration: underline;
+}
+
+/*
+* top scores
+* ranking of best scores
+*/
+
+#topScores {
+  width: 800px;
+  margin: auto;
+  outline: 0px solid red;
+}
+
+#topScores h1 {
+  font: bold 2em monospace;
+  margin: 0.5em 0 0.5em 0;
 }
 
 /*

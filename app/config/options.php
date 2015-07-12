@@ -80,24 +80,24 @@ return array(
 
   /* RANDOM ENCOUNTERS
   
-  * 01. Cocaine price * $multiplier
-  * 02. Weed price / $multiplier
+  * 01. Product 1 price * $multiplier
+  * 02. Product 4 price / $multiplier
   * 03. Game date + X days - !important [daysLost] is being replaced with the number of actual days
-  * 04. -1 to -10 units of drugs from every category
-  * 05. -1 to -20 units of weed
-  * 06. Heroin price / $multiplier
-  * 07. Adds 1 to 10 units of a single drug
-  * 08. Ludes price / $multiplier
-  * 09. Heroin price * $multiplier
-  * 10. Acid price / $multiplier
+  * 04. -1 to -10 units of products from every category
+  * 05. -1 to -20 units of Product 4
+  * 06. Product 2 price / $multiplier
+  * 07. Adds 1 to 10 units of a single product
+  * 08. Product 6 price / $multiplier
+  * 09. Product 2 price * $multiplier
+  * 10. Product 3 price / $multiplier
   * 11. User cash / $multiplier
   *
   * Special encounters (requiring extra action)
   *
   * 12. Adds 10 to 25 units of coat space
   * 13. 50% for death, 50% for +1 points multiplier
-  * 14. Buy a weapon for 300-500 to fight the cops
-  * 15. Fight 1 to 6 cops
+  * 14. Buy a weapon for 300-500 to fight the enemies
+  * 15. Fight 1 to 6 enemies
   */
 
   'TXT_RAND_ENCOUNTER_01' => 'PIRATES MADE A BIG IVORY BUST !!  PRICES ARE OUTRAGEOUS !!',
@@ -107,7 +107,7 @@ return array(
   'TXT_RAND_ENCOUNTER_05' => 'YOUR COOK HAS USED SOME OF THE COAL TO MAKE FIRE UNDER THE POTS !!',
   'TXT_RAND_ENCOUNTER_06' => 'PIRATES ARE SELLING CHEAP WINE FROM LAST WEEKS RAID !!',
   'TXT_RAND_ENCOUNTER_07' => 'YOUR CREW FINDS [findHowMany] UNITS OF [findWhat] ON THE BEACH !!',
-  'TXT_RAND_ENCOUNTER_08' => 'PIRATES ARE SELLING CHEAP LUDES FROM LAST WEEKS RAID !!',
+  'TXT_RAND_ENCOUNTER_08' => 'PIRATES ARE SELLING CHEAP COTTON FROM LAST WEEKS RAID !!',
   'TXT_RAND_ENCOUNTER_09' => 'PORTS ARE BUYING WINE AT OURAGEOUS PRICES !!',
   'TXT_RAND_ENCOUNTER_10' => 'THE MARKET HAS BEEN FLOODED WITH CHEAP TEA !!!',
   'TXT_RAND_ENCOUNTER_11' => 'YOU WERE MUGGED AT THE INN !!',
@@ -121,8 +121,9 @@ return array(
   'TXT_HARDASS_GUNS' => 'CANNONS',
 
   'TXT_INSTRUCTIONS' => "This is a game of buying, selling, and fighting. The object of the game is to
-pay off your debt to the loan shark. Then, make as much money as you can in a 1 month period.
-Watch the sea,  as  you  might  run  into  the pirates !!  Your main warehouse will be in Dublin.
+pay off your debt to the loan shark. Then, make as much money as you can
+in a 1 month period. Watch the sea,  as  you  might  run  into  the pirates !!
+Your main warehouse will be in Dublin.
 
 The prices of merchandise per unit are:\r\n"
 

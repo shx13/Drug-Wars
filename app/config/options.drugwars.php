@@ -9,7 +9,7 @@
 
 return array(
   // MAIN OPTIONS
-  'GAME_NAME'       => 'PHP WARS',
+  'GAME_NAME'       => 'DRUG WARS',
   'START_GAME_DATE' => strtotime('4-12-1983'), // original start date: 4-12-1983
 	'END_GAME_DATE'   => strtotime('4-1-1984'),  // original end date: 4-1-1984
 

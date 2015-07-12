@@ -21,19 +21,19 @@ class GameModel
     Session::set('user_location', Options::get('LOCATION_1'));
     Session::set('user_action', null);
 
-    Session::set('stash_product_1', 10);
-    Session::set('stash_product_2', 10);
-    Session::set('stash_product_3', 10);
-    Session::set('stash_product_4', 10);
-    Session::set('stash_product_5', 10);
-    Session::set('stash_product_6', 10);
+    Session::set('stash_product_1', 0);
+    Session::set('stash_product_2', 0);
+    Session::set('stash_product_3', 0);
+    Session::set('stash_product_4', 0);
+    Session::set('stash_product_5', 0);
+    Session::set('stash_product_6', 0);
 
-    Session::set('coat_product_1', 10);
-    Session::set('coat_product_2', 10);
-    Session::set('coat_product_3', 10);
-    Session::set('coat_product_4', 10);
-    Session::set('coat_product_5', 10);
-    Session::set('coat_product_6', 10);
+    Session::set('coat_product_1', 0);
+    Session::set('coat_product_2', 0);
+    Session::set('coat_product_3', 0);
+    Session::set('coat_product_4', 0);
+    Session::set('coat_product_5', 0);
+    Session::set('coat_product_6', 0);
 
     GameModel::reroll_products_prices();
 
@@ -232,12 +232,12 @@ class GameModel
 
 
   /*
-  * Sell drugs.
+  * Sell merchandise.
   *
   * 1. Validate the input
-  * 2. Check what drugs the user wants to sell and get their local prices
-  * 3. Check if the user actually has the drugs for sale
-  * 4. Remove drugs from the coat
+  * 2. Check what goods the user wants to sell and get their local prices
+  * 3. Check if the user actually has the merchandise for sale
+  * 4. Remove goods from the coat
   * 5. Add space to the coat
   * 6. Give the cash from the sale to the user
   */
@@ -253,48 +253,42 @@ class GameModel
        $itemId > 6)
     { Redirect::to('game/'); die(); }
 
-    // 2. Check what drugs the user wants to sell and get their local prices
+    // 2. Check what goods the user wants to sell and get their local prices
     switch($itemId) {
       case 1:
         $item_id = 'product_1';
-        $item_name = 'COCAINE';
         $item_price = Session::get('price_product_1');
         break;
       case 2:
         $item_id = 'product_2';
-        $item_name = 'HEROIN';
         $item_price = Session::get('price_product_2');
         break;
       case 3:
         $item_id = 'product_3';
-        $item_name = 'ACID';
         $item_price = Session::get('price_product_3');
         break;
       case 4:
         $item_id = 'product_4';
-        $item_name = 'WEED';
         $item_price = Session::get('price_product_4');
         break;
       case 5:
         $item_id = 'product_5';
-        $item_name = 'SPEED';
         $item_price = Session::get('price_product_5');
         break;
       case 6:
         $item_id = 'product_6';
-        $item_name = 'LUDES';
         $item_price = Session::get('price_product_6');
         break;
     }
 
-    // 3. Check if the user actually has the drugs for sale
+    // 3. Check if the user actually has enough merchandise for sale
     if(Session::get('coat_'.strtolower($item_id)) < Request::post('quantity')) {
       Session::add('feedback_negative', 'YOU DON\'T HAVE THAT MANY, DUDE !');
       Redirect::to('game/');
       return false;
     }
 
-    // 4. Remove drugs from the coat
+    // 4. Remove goods from the coat
     Session::set('coat_'.strtolower($item_id), Session::get('coat_'.strtolower($item_id)) - Request::post('quantity'));
 
     // 5. Add space to the coat
@@ -352,8 +346,7 @@ class GameModel
 
   public static function random_encounter() {
 
-    // $dice = mt_rand(1,20);
-    $dice = mt_rand(20,20);
+    $dice = mt_rand(1,20);
     $multiplier = mt_rand(2,10);
 
     switch($dice) {

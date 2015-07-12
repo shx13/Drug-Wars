@@ -34,12 +34,17 @@ class DatabaseFactory
 
 	public function getConnection() {
 		if (!$this->database) {
-			$options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
-			$this->database = new PDO(
-				Config::get('DB_TYPE') . ':host=' . Config::get('DB_HOST') . ';dbname=' .
-				Config::get('DB_NAME') . ';port=' . Config::get('DB_PORT') . ';charset=' . Config::get('DB_CHARSET'),
-				Config::get('DB_USER'), Config::get('DB_PASS'), $options
-			);
+      try {
+  			$options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
+  			$this->database = new PDO(
+  				Config::get('DB_TYPE') . ':host=' . Config::get('DB_HOST') . ';dbname=' .
+  				Config::get('DB_NAME') . ';port=' . Config::get('DB_PORT') . ';charset=' . Config::get('DB_CHARSET'),
+  				Config::get('DB_USER'), Config::get('DB_PASS'), $options
+  			);
+		  } catch(PDOException $e) {
+		    echo '<p style="color: red; text-align: center; font-size: 1.3em; margin: 1em;">ERROR - can\'t connect to database. Please set up the configuration file properly.</p>';
+        // echo 'ERROR: ' . $e->getMessage();
+      }
 		}
 		return $this->database;
 	}

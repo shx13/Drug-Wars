@@ -69,9 +69,4 @@ return array(
    */
   'COOKIE_RUNTIME' => 1209600,
   'COOKIE_PATH' => '/',
-
-  /*
-	* Configuration for the game
-	*/
-	'END_GAME_DATE' => strtotime('4-1-1984'), // start date: 4-12-1983
 );

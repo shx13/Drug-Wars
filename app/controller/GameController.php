@@ -151,19 +151,19 @@ class GameController extends Controller
     Redirect::home();
   }
 
-  // jet to
+  // jet (travel) to
   public function jet_to($placeId) {
     GameModel::jet_to($placeId);
     Redirect::to('game/');
   }
 
-  // buy drugs
+  // buy goods
   public function buy($itemId) {
     GameModel::buy_item($itemId);
     Redirect::to('game/');
   }
 
-  // sell drugs
+  // sell goods
   public function sell($itemId) {
     GameModel::sell_item($itemId);
     Redirect::to('game/');
@@ -181,7 +181,7 @@ class GameController extends Controller
     Redirect::to('game/');
   }
 
-  // transfer drugs
+  // transfer merchandise
   public function transfer_drugs() {
     GameModel::transfer_drugs();
     Redirect::to('game/');
