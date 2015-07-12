@@ -115,8 +115,8 @@
 </p>
 
 <div id="action_jet_where">
-<p>WHERE TO DUDE:    <a href="<?php echo Config::get('URL'); ?>game/jet_to/1/">1)  BRONX</a>        <a href="<?php echo Config::get('URL'); ?>game/jet_to/2/">2)  GHETTO</a>          <a href="<?php echo Config::get('URL'); ?>game/jet_to/3/">3)  CENTRAL PARK</a>
-                  <a href="<?php echo Config::get('URL'); ?>game/jet_to/4/">4)  MANHATTAN</a>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/5/">5)  CONEY ISLAND</a>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/6/">6)  BROOKLYN</a>
+<p>WHERE TO DUDE:    <a href="<?php echo Config::get('URL'); ?>game/jet_to/1/">1)  <?php echo Options::get('LOCATION_1'); ?></a>        <a href="<?php echo Config::get('URL'); ?>game/jet_to/2/">2)  <?php echo Options::get('LOCATION_2'); ?></a>          <a href="<?php echo Config::get('URL'); ?>game/jet_to/3/">3)  <?php echo Options::get('LOCATION_3'); ?></a>
+                  <a href="<?php echo Config::get('URL'); ?>game/jet_to/4/">4)  <?php echo Options::get('LOCATION_4'); ?></a>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/5/">5)  <?php echo Options::get('LOCATION_5'); ?></a>    <a href="<?php echo Config::get('URL'); ?>game/jet_to/6/">6)  <?php echo Options::get('LOCATION_6'); ?></a>
 
 <a class="back_to_menu" href="#">Back to main menu</a></p>
 </div>

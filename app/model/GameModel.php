@@ -17,8 +17,8 @@ class GameModel
 
   public static function start_new_game() {
     Session::set('game', 'on');
-    Session::set('game_date', strtotime('4-12-1983'));
-    Session::set('user_location', 'BRONX');
+    Session::set('game_date', Options::get('START_GAME_DATE'));
+    Session::set('user_location', Options::get('LOCATION_1'));
     Session::set('user_action', null);
 
     Session::set('stash_cocaine', 0);
@@ -28,12 +28,12 @@ class GameModel
     Session::set('stash_speed', 0);
     Session::set('stash_ludes', 0);
 
-    Session::set('coat_cocaine', 10);
-    Session::set('coat_heroin', 10);
-    Session::set('coat_acid', 10);
-    Session::set('coat_weed', 10);
-    Session::set('coat_speed', 10);
-    Session::set('coat_ludes', 10);
+    Session::set('coat_cocaine', 0);
+    Session::set('coat_heroin', 0);
+    Session::set('coat_acid', 0);
+    Session::set('coat_weed', 0);
+    Session::set('coat_speed', 0);
+    Session::set('coat_ludes', 0);
 
     GameModel::reroll_drugs_prices();
 
@@ -91,22 +91,22 @@ class GameModel
     // 2. Set user_location to choosen location.
     switch($placeId) {
       case 1:
-        $location = 'BRONX';
+        $location = Options::get('LOCATION_1');
         break;
       case 2:
-        $location = 'GHETTO';
+        $location = Options::get('LOCATION_2');
         break;
       case 3:
-        $location = 'CENTRAL PARK';
+        $location = Options::get('LOCATION_3');
         break;
       case 4:
-        $location = 'MANHATTAN';
+        $location = Options::get('LOCATION_4');
         break;
       case 5:
-        $location = 'CONEY ISLAND';
+        $location = Options::get('LOCATION_5');
         break;
       case 6:
-        $location = 'BROOKLYN';
+        $location = Options::get('LOCATION_6');
         break;
     }
 
@@ -118,7 +118,7 @@ class GameModel
     // 4. Add 1 day to game_date and check if it didn't hit the game limit (end of the game)
     Session::set('game_date', strtotime('+1 day', Session::get('game_date')));
 
-    if(Session::get('game_date') > Config::get('END_GAME_DATE')) {
+    if(Session::get('game_date') > Options::get('END_GAME_DATE')) {
       Redirect::to('game/final_score/');
       return false;
     }
@@ -1005,6 +1005,8 @@ class GameModel
 
     $database = DatabaseFactory::getFactory()->getConnection();
 
+    if($database != false) {
+
     $sql = "SELECT *
             FROM ranking
             ORDER BY points DESC;";
@@ -1013,6 +1015,8 @@ class GameModel
     $query->execute();
 
     return $query->fetchAll();
+
+    }
 
   }
 

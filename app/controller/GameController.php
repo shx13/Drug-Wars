@@ -44,7 +44,7 @@ class GameController extends Controller
     }
 
     // game hits its time limit - stop it and send the user to final_score screen
-    if(Session::get('game_date') > Config::get('END_GAME_DATE')) {
+    if(Session::get('game_date') > Options::get('END_GAME_DATE')) {
 
       // change the game mode
       Session::set('game','final_score');
